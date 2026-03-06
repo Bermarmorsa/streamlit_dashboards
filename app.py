@@ -45,6 +45,11 @@ try:
     prog_df_gr_top10 = prog_df_gr.sort_values(by=['dur_minutos'], ascending=False).head(10)
     st.dataframe(prog_df_gr_top10)
 
+    #Cargo el nuevo de IMDB
+    df_imbd = pd.read_csv('data/imdb_top_1000.csv')
+
+
+
 
     iris_df = pd.read_csv('data/iris.csv')
     st.success('\U0001F4DA Datos cargados')
@@ -123,6 +128,66 @@ try:
                   names='conteo_dur_min',
                   title='Minutos de pelis')
         st.plotly_chart(fig, use_container_width=True)
+
+    # 6 seccion interactiva
+    st.header('\U0001F504 Seccion Interactiva')
+
+    #selector de dataset
+    dataset_choice = st.radio(
+        'Selecciona el conjunto de datos',
+        ['Pelis Netflix', 'Iris Dataset' , 'IMDB']
+    )
+
+    if dataset_choice == 'Pelis Netflix':
+        df = prog_df
+    elif dataset_choice == 'IMDB':
+        df = df_imbd
+    else:
+        df = iris_df
+
+    #selecionar la visualización
+    chart_type = st.selectbox(
+        'Selecciona el tipo de gráfico',
+        ['Barras', 'Dispersion', 'Línea']
+    )
+
+    #selector de datos
+    x_axis = st.selectbox('Selecciona el eje X', df.columns)
+    y_axis = st.selectbox('Selecciona el eje Y', df.columns)
+
+    #generar gráfico
+    if chart_type == 'Barras':
+        fig = px.bar(df, x=x_axis, y=y_axis)
+    elif chart_type == 'Dispersion':
+        fig = px.scatter(df, x=x_axis, y=y_axis)
+    else:
+        fig = px.line(df, x=x_axis, y=y_axis)
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.header(' Conclusiones')
+    st.markdown('''
+    Comparación de bibliotecas
+    
+    1. **Matplotlib**
+    * Biblioteca base para visualización
+    * Mayor control sobre controles del gráfico
+    * Curva de aprendizaje mas pronunciada
+    
+    2. **Seaborn**
+    * Construida sobre Matplotlib
+    * Excelente para visualización de estadisticas
+    * Estilos predefinidos atractivos
+    
+    3. **Streamlit**
+    * Facilita la creació nde aplicaciones web
+    * Integraación prefecta de otras bibliotecas
+    * Desarrollo rápido de prototipos   
+    ''')
+
+    #footer
+    st.markdown('------')
+
+
 
 
 
