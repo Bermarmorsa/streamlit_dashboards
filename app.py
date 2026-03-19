@@ -3,6 +3,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 
@@ -29,7 +32,7 @@ try:
 
     #cargamos los datos de peliculas de netfilx
 
-    prog_df = pd.read_csv('data/netflix_titles.csv')
+    prog_df = pd.read_csv(os.path.join(BASE_DIR, 'Data/netflix_titles.csv'))
     prog_df = prog_df[prog_df["type"].str.contains("Movie")]
     #prog_df['dur_minutos'] = prog_df["duration"].str.replace("min", "", regex=False).str.strip().astype(str)
 
@@ -46,12 +49,13 @@ try:
     st.dataframe(prog_df_gr_top10)
 
     #Cargo el nuevo de IMDB
-    df_imbd = pd.read_csv('data/imdb_top_1000.csv')
+    df_imbd = pd.read_csv(os.path.join(BASE_DIR, 'Data/imdb_top_1000.csv'))
+    st.info(df_imbd)
 
 
 
 
-    iris_df = pd.read_csv('data/iris.csv')
+    iris_df = pd.read_csv(os.path.join(BASE_DIR, 'Data/Iris.csv'))
     st.success('\U0001F4DA Datos cargados')
 
 
